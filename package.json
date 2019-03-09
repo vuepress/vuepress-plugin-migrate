@@ -1,7 +1,7 @@
 {
   "name": "vuepress-plugin-migrate",
-  "version": "0.1.0",
-  "main": "index.js",
+  "version": "0.2.0",
+  "main": "src/index.js",
   "author": "Shigma <1700011071@pku.edu.cn>",
   "license": "MIT",
   "description": "A migration plugin for VuePress.",

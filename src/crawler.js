@@ -30,7 +30,7 @@ module.exports = (options, context) => ({
         })
         const limiter = pLimit(options.maxConcurrentTasks)
         pages.forEach(async (url) => {
-          const filename = options.getFilename(url)
+          const filename = options.getFileName(url)
           if (!filename) return
           const filepath = resolve(options.downloadDir, filename + '.html')
           if (existsSync(filepath) && !cliOptions.forced) return
