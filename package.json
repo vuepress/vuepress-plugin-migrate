@@ -1,0 +1,12 @@
+{
+  "name": "vuepress-plugin-migrate",
+  "version": "1.0.0",
+  "dependencies": {
+    "@vuepress/shared-utils": "^1.0.0-alpha.42",
+    "cheerio": "^1.0.0-rc.2",
+    "js-yaml": "^3.12.2",
+    "node-fetch": "^2.3.0",
+    "p-limit": "^2.2.0",
+    "xml2js": "^0.4.19"
+  }
+}
