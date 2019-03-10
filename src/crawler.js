@@ -6,7 +6,7 @@ const { parseString } = require('xml2js')
 const { performance } = require('perf_hooks')
 const { existsSync, promises: { writeFile } } = require('fs')
 
-module.exports = async (cliOptions, options, context) => {
+module.exports.crawl = async (cliOptions, options, context) => {
   const sitemap = cliOptions.sitemap || options.sitemap
   const forced = cliOptions.forced || options.forceDownload
   if (!sitemap) return
@@ -58,7 +58,7 @@ module.exports = async (cliOptions, options, context) => {
     } catch (err) {
       ++ processed
       spinner.fail(`An error was encounted in ${filename}`)
-      if (process.env.DEBUG) console.log(err)
+      if (cliOptions.debug) console.log(err)
     }
   }))
 
@@ -66,3 +66,8 @@ module.exports = async (cliOptions, options, context) => {
     spinner.succeed(`Pages were fetched in ${((performance.now() - startTime) / 1000).toFixed(2)}s.`)
   }
 }
+
+module.exports.registerOptions = command => command
+  .option('--debug', 'use debug mode')
+  .option('-s, --sitemap <sitemap>', 'sitemap URL')
+  .option('-f, --forced', 'forced downloading')

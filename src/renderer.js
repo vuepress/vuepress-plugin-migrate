@@ -1,4 +1,4 @@
-const renderer = {
+const defaultRules = {
   h1: makeWrap('#', '\n\n'),
   h2: makeWrap('##', '\n\n'),
   h3: makeWrap('###', '\n\n'),
@@ -11,47 +11,53 @@ const renderer = {
   em: makeWrap('*'),
   strong: makeWrap('**'),
   del: makeWrap('-'),
-  span: render,
+  span: makeWrap(),
   br: _ => '\n',
   a: el => `[${el.nodeValue}|${el.attribs.href}]`,
   img: el => `![image](${el.attribs.src})`,
   blockquote: makeWrap('> ', '\n\n'),
   p: makeWrap('', '\n\n'),
-  div: render,
+  div: makeWrap(),
   hr: _ => '---\n\n',
   iframe: _ => '[[iframe]]',
   audio: _ => '[[audio]]',
   video: _ => '[[video]]',
   table: _ => '[[table]]',
   nav: _ => '[[nav]]',
-  i: render,
-  figure: render, // FIXME
+  i: makeWrap(),
+  figure: makeWrap(), // FIXME
   figcaption: makeWrap('\n', ''),
 }
 
-function makeWrap(leftWrap = '', rightWrap = leftWrap) {
-  return el => leftWrap + render(el) + rightWrap
-}
-
-function render(el) {
-  let result = ''
-  for (const child of el.children) {
-    if (child.type === 'text') {
-      result += child.nodeValue
-    } else if (child.type === 'tag') {
-      if (child.tagName in renderer) {
-        result += renderer[child.tagName](child)
-      } else {
-        console.log(child)
-        throw child.tagName
-      }
+module.exports = class Renderer {
+  constructor(rules) {
+    this.rules = {
+      ...defaultRules,
+      ...rules
     }
   }
-  return result
+
+  render(el) {
+    let result = ''
+    for (const child of el.children) {
+      if (child.type === 'text') {
+        result += child.nodeValue
+      } else if (child.type === 'tag') {
+        if (child.tagName in this.rules) {
+          result += this.rules[child.tagName].call(this, child)
+        } else {
+          throw new Error(`Unrecognized tag name: ${child.tagName}`)
+        }
+      }
+    }
+    return result
+  }
 }
 
-module.exports = {
-  renderer,
-  makeWrap,
-  render,
+function makeWrap(leftWrap = '', rightWrap = leftWrap) {
+  return function (el) {
+    return leftWrap + this.render(el) + rightWrap
+  }
 }
+
+module.exports.makeWrap = makeWrap
