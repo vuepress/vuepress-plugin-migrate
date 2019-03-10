@@ -23,29 +23,19 @@ function ensureNoUndef(source) {
   }
 }
 
-module.exports = (options, context) => ({
-  name: 'vuepress-plugin-migrate:converter',
-
-  extendCli(cli) {
-    cli
-      .command('convert', 'convert HTML files into markdown')
-      .allowUnknownOptions()
-      .action((cliOptions) => {
-        const targetDir = resolve(context.sourceDir, options.targetDir)
-        readdirSync(options.downloadDir).forEach(async (name) => {
-          const html = await readFile(resolve(options.downloadDir, name))
-          const $ = cheerio.load(html, {
-            decodeEntities: false,
-          })
-          const { frontmatter, content, filename } = options.parseHTML($, render)
-          const output = (
-            '---\n' +
-            safeDump(ensureNoUndef(frontmatter)) +
-            '---\n' +
-            content.trim()
-          ).replace(/\n{3,}/g, '\n\n') + '\n'
-          writeFile(`${targetDir}/${filename}.md`, output)
-        })
-      })
-  }
-})
+module.exports = (cliOptions, options, context) => {
+  readdirSync(options.downloadDir).forEach(async (name) => {
+    const html = await readFile(resolve(options.downloadDir, name))
+    const $ = cheerio.load(html, {
+      decodeEntities: false,
+    })
+    const { frontmatter, content, filename } = options.parseHTML($, render)
+    const frontmatterYAML = safeDump(ensureNoUndef(frontmatter)).trim()
+    let output = content.trim()
+    if (frontmatterYAML) {
+      output = `---\n${frontmatterYAML}\n---\n\n` + output
+    }
+    output = output.replace(/\n{3,}/g, '\n\n') + '\n'
+    writeFile(`${options.targetDir}/${filename}.md`, output)
+  })
+}

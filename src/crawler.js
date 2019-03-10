@@ -1,43 +1,68 @@
 const pLimit = require('p-limit')
 const fetch = require('node-fetch')
+const spinner = require('./spinner')
 const { resolve } = require('path')
 const { parseString } = require('xml2js')
+const { performance } = require('perf_hooks')
 const { existsSync, promises: { writeFile } } = require('fs')
 
-module.exports = (options, context) => ({
-  name: 'vuepress-plugin-migrate:crawler',
+module.exports = async (cliOptions, options, context) => {
+  const sitemap = cliOptions.sitemap || options.sitemap
+  const forced = cliOptions.forced || options.forceDownload
+  if (!sitemap) return
 
-  extendCli(cli) {
-    cli
-      .command('crawl', 'crawl pages offered by given sitemap')
-      .option('-s, --sitemap <sitemap>', 'sitemap URL')
-      .option('-f, --forced', 'forced downloading')
-      .allowUnknownOptions()
-      .action(async (cliOptions) => {
-        const sitemap = cliOptions.sitemap || options.sitemap
-        if (!sitemap) return
-        const response = await fetch(sitemap)
-        const xml = await response.text()
-        const pages = await new Promise((resolve, reject) => {
-          parseString(xml, (err, { urlset: { url } }) => {
-            if (err) throw reject(err)
-            const output = []
-            for (const { loc } of url) {
-              output.push(loc[0])
-            }
-            resolve(output)
-          })
-        })
-        const limiter = pLimit(options.maxConcurrentTasks)
-        pages.forEach(async (url) => {
-          const filename = options.getFileName(url)
-          if (!filename) return
-          const filepath = resolve(options.downloadDir, filename + '.html')
-          if (existsSync(filepath) && !cliOptions.forced) return
-          const response = await limiter(() => fetch(url))
-          const html = await response.text()
-          await writeFile(filepath, html)
-        })
+  let urls
+  try {
+    const startTime = performance.now()
+    spinner.start(`Fetching ${sitemap} ...`)
+    const response = await fetch(sitemap)
+    const xml = await response.text()
+    urls = await new Promise((resolve, reject) => {
+      parseString(xml, (err, { urlset: { url } }) => {
+        if (err) throw reject(err)
+        const output = []
+        for (const { loc } of url) {
+          output.push(loc[0])
+        }
+        resolve(output)
       })
+    })
+    spinner.succeed(`Sitemap was fetched in ${((performance.now() - startTime) / 1000).toFixed(2)}s.`)
+  } catch (err) {
+    spinner.fail('An error was encounted during sitemap fetching.')
+    console.log(err)
+    return
   }
-})
+
+  const startTime = performance.now()
+  const limiter = pLimit(options.maxConcurrentTasks)
+  const pages = urls.map((url) => {
+    const filename = options.getFileName(url)
+    if (!filename) return
+    const filepath = resolve(options.downloadDir, filename + '.html')
+    if (existsSync(filepath) && !forced) return
+    return [url, filename + '.html', filepath]
+  }).filter(i => i)
+
+  const pageCount = pages.length
+  spinner.succeed(`Total ${urls.length} pages, skipped ${urls.length - pageCount} pages.`)
+
+  let processed = 0
+  await Promise.all(pages.map(async ([url, filename, filepath]) => {
+    try {
+      const response = await limiter(() => fetch(url))
+      const html = await response.text()
+      await writeFile(filepath, html)
+      ++ processed
+      spinner.start(`${filename} (${processed}/${pageCount}) ...`)
+    } catch (err) {
+      ++ processed
+      spinner.fail(`An error was encounted in ${filename}`)
+      if (process.env.DEBUG) console.log(err)
+    }
+  }))
+
+  if (pageCount) {
+    spinner.succeed(`Pages were fetched in ${((performance.now() - startTime) / 1000).toFixed(2)}s.`)
+  }
+}

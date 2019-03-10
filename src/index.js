@@ -1,5 +1,7 @@
 const { resolve, isAbsolute } = require('path')
 const { existsSync, mkdirSync } = require('fs')
+const crawl = require('./crawler')
+const convert = require('./converter')
 
 let fileIndex = 0
 const defaultgetFileName = () => String(++fileIndex)
@@ -27,9 +29,17 @@ module.exports = (options, context) => {
   return {
     name: 'vuepress-plugin-migrate',
 
-    plugins: [
-      [require('./crawler'), options],
-      [require('./converter'), options],
-    ],
+    extendCli(cli) {
+      cli
+        .command('convert', 'convert HTML files into markdown')
+        .allowUnknownOptions()
+        .action(cliOptions => convert(cliOptions, options, context))
+      cli
+        .command('crawl', 'crawl pages offered by given sitemap')
+        .option('-s, --sitemap <sitemap>', 'sitemap URL')
+        .option('-f, --forced', 'forced downloading')
+        .allowUnknownOptions()
+        .action(cliOptions => crawl(cliOptions, options, context))
+    },
   }
 }
