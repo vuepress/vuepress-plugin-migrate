@@ -1,12 +1,11 @@
 const pLimit = require('p-limit')
 const fetch = require('node-fetch')
 const spinner = require('./spinner')
-const { resolve } = require('path')
 const { parseString } = require('xml2js')
 const { performance } = require('perf_hooks')
 const { existsSync, promises: { writeFile } } = require('fs')
 
-module.exports.crawl = async (cliOptions, options, context) => {
+module.exports.download = async (cliOptions, options, context) => {
   const sitemap = cliOptions.sitemap || options.sitemap
   const forced = cliOptions.forced || options.forceDownload
   if (!sitemap) return
@@ -39,7 +38,7 @@ module.exports.crawl = async (cliOptions, options, context) => {
   const pages = urls.map((url) => {
     const filename = options.getFileName(url)
     if (!filename) return
-    const filepath = resolve(options.downloadDir, filename + '.html')
+    const filepath = `${options.downloadDir}/${filename}.html`
     if (existsSync(filepath) && !forced) return
     return [url, filename + '.html', filepath]
   }).filter(i => i)
@@ -58,7 +57,7 @@ module.exports.crawl = async (cliOptions, options, context) => {
     } catch (err) {
       ++ processed
       spinner.fail(`An error was encounted in ${filename}`)
-      if (cliOptions.debug) console.log(err)
+      if (cliOptions.detail) console.log(err)
     }
   }))
 
@@ -68,6 +67,4 @@ module.exports.crawl = async (cliOptions, options, context) => {
 }
 
 module.exports.registerOptions = command => command
-  .option('--debug', 'use debug mode')
   .option('-s, --sitemap <sitemap>', 'sitemap URL')
-  .option('-f, --forced', 'forced downloading')

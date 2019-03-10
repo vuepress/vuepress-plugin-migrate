@@ -1,7 +1,8 @@
 const { resolve, isAbsolute } = require('path')
 const { existsSync, mkdirSync } = require('fs')
-const crawler = require('./crawler')
+const downloader = require('./downloader')
 const converter = require('./converter')
+const shared = require('./shared')
 
 let fileIndex = 0
 const defaultgetFileName = () => String(++fileIndex)
@@ -30,27 +31,27 @@ module.exports = (options, context) => {
     name: 'vuepress-plugin-migrate',
 
     extendCli(cli) {
-      const convertCommand = cli
-        .command('convert', 'convert HTML files into markdown')
-        .allowUnknownOptions()
+      const convertCommand = cli.command('convert', 'convert HTML files into markdown')
       converter.registerOptions(convertCommand)
-      convertCommand.action(cliOptions => converter.convert(cliOptions, options, context))
+      shared.registerOptions(convertCommand)
+        .option('-f, --forced', 'force converting')
+        .action(cliOptions => converter.convert(cliOptions, options, context))
 
-      const crawlCommand = cli
-        .command('crawl', 'crawl pages offered by given sitemap')
-        .allowUnknownOptions()
-      crawler.registerOptions(crawlCommand)
-      crawlCommand.action(cliOptions => crawler.crawl(cliOptions, options, context))
+      const downloadCommand = cli.command('download', 'download pages offered by given sitemap')
+      downloader.registerOptions(downloadCommand)
+      shared.registerOptions(downloadCommand)
+        .option('-f, --forced', 'force downloading')
+        .action(cliOptions => downloader.download(cliOptions, options, context))
       
-      const migrateCommand = cli
-        .command('migrate', 'migrate from another website')
-        .allowUnknownOptions()
+      const migrateCommand = cli.command('migrate', 'migrate from another website')
       converter.registerOptions(migrateCommand)
-      crawler.registerOptions(migrateCommand)
-      migrateCommand.action(async (cliOptions) => {
-        await crawler.crawl(cliOptions, options, context)
-        await converter.convert(cliOptions, options, context)
-      })
+      downloader.registerOptions(migrateCommand)
+      shared.registerOptions(migrateCommand)
+        .option('-f, --forced', 'force downloading and converting')
+        .action(async (cliOptions) => {
+          await downloader.download(cliOptions, options, context)
+          await converter.convert(cliOptions, options, context)
+        })
     },
   }
 }

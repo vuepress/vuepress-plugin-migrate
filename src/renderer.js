@@ -1,3 +1,5 @@
+const LIST_ITEM = '_@@_LIST_ITEM_@@_'
+
 const defaultRules = {
   h1: makeWrap('#', '\n\n'),
   h2: makeWrap('##', '\n\n'),
@@ -5,9 +7,14 @@ const defaultRules = {
   h4: makeWrap('####', '\n\n'),
   h5: makeWrap('#####', '\n\n'),
   h6: makeWrap('######', '\n\n'),
-  ul: makeWrap('', ''),
-  li: makeWrap('- ', ''),
-  ol: makeWrap('- ', ''), // FIXME
+  li: makeWrap(LIST_ITEM, ''),
+  ul(el) {
+    return this.render(el).replace(LIST_ITEM, '- ')
+  },
+  ol(el) {
+    let index = 0
+    return this.render(el).replace(LIST_ITEM, () => `${++ index}. `)
+  },
   em: makeWrap('*'),
   strong: makeWrap('**'),
   del: makeWrap('-'),
@@ -30,11 +37,15 @@ const defaultRules = {
 }
 
 module.exports = class Renderer {
-  constructor(rules) {
+  constructor({
+    rules,
+    skipUnknown,
+  } = {}) {
     this.rules = {
       ...defaultRules,
-      ...rules
+      ...rules,
     }
+    this.skipUnknown = skipUnknown
   }
 
   render(el) {
@@ -45,7 +56,7 @@ module.exports = class Renderer {
       } else if (child.type === 'tag') {
         if (child.tagName in this.rules) {
           result += this.rules[child.tagName].call(this, child)
-        } else {
+        } else if (!this.skipUnknown) {
           throw new Error(`Unrecognized tag name: ${child.tagName}`)
         }
       }

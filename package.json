@@ -1,10 +1,10 @@
 {
   "name": "vuepress-plugin-migrate",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "main": "src/index.js",
   "author": "Shigma <1700011071@pku.edu.cn>",
   "license": "MIT",
-  "description": "A migration plugin for VuePress.",
+  "description": "A VuePress plugin which migrates a website to VuePress.",
   "dependencies": {
     "@vuepress/shared-utils": "^1.0.0-alpha.42",
     "cheerio": "^1.0.0-rc.2",
