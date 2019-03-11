@@ -1,7 +1,28 @@
 const name = 'vuepress-plugin-migrate'
 
+const getEcosystem = (locale, ecosystem, plugins, themes, others) => ({
+  text: ecosystem,
+  items: [{
+    text: plugins,
+    items: [{
+      text: 'vuepress-plugin-mathjax',
+      link: `https://Shigma.github.io/vuepress-plugin-mathjax/${locale}`,
+    }, {
+      text: 'vuepress-plugin-pangu',
+      link: 'https://Shigma.github.io/markdown-it-pangu/',
+    }]
+  }, {
+    text: others,
+    items: [{
+      text: 'vuepress-mergeable',
+      link: `https://Shigma.github.io/vuepress-mergeable/${locale}`,
+    }]
+  }],
+})
+
 const guideSidebar = () => [
   '',
+  'cli.html',
   'config.html',
 ]
 
@@ -36,19 +57,9 @@ module.exports = ({ isProd }) => ({
         selectText: 'Languages',
         editLinkText: 'Edit this page on GitHub',
         lastUpdated: 'Last Updated',
-        nav: [{
-          text: 'Ecosystem',
-          items: [{
-            text: 'plugins',
-            items: [{
-              text: 'vuepress-plugin-mathjax',
-              link: 'https://Shigma.github.io/vuepress-plugin-mathjax',
-            }, {
-              text: 'vuepress-plugin-pangu',
-              link: 'https://Shigma.github.io/markdown-it-pangu/',
-            }],
-          }],
-        }],
+        nav: [
+          getEcosystem('', 'Ecosystem', 'Plugins', 'Themes', 'Others')
+        ],
         sidebar: {
           '/': guideSidebar(),
         },
@@ -58,19 +69,9 @@ module.exports = ({ isProd }) => ({
         selectText: '选择语言',
         editLinkText: '在 GitHub 上编辑此页',
         lastUpdated: '上次更新',
-        nav: [{
-          text: '生态系统',
-          items: [{
-            text: '插件',
-            items: [{
-              text: 'vuepress-plugin-mathjax',
-              link: 'https://Shigma.github.io/vuepress-plugin-mathjax',
-            }, {
-              text: 'vuepress-plugin-pangu',
-              link: 'https://Shigma.github.io/markdown-it-pangu/',
-            }],
-          }],
-        }],
+        nav: [
+          getEcosystem('zh', '生态系统', '插件', '主题', '其他')
+        ],
         sidebar: {
           '/zh/': guideSidebar(),
         },

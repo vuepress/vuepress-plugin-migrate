@@ -5,6 +5,20 @@
 
 A [VuePress](https://vuepress.vuejs.org/) plugin which migrates a website to VuePress.
 
+## CLI
+
+### vuepress download
+
+Crawl the required pages from the source site and store them in a local folder.
+
+### vuepress convert
+
+Convert local HTML files to a markdown files and output them.
+
+### vuepress migrate
+
+Execute download and convert command in sequence. Supports parameters of both commands.
+
 ## Options
 
 ### targetDir
@@ -70,3 +84,7 @@ interface ParsedResult {
   content?: string
 }
 ```
+
+## Contribution
+
+Contribution Welcome!
