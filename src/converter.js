@@ -27,7 +27,7 @@ function ensureNoUndef(source) {
 
 module.exports.convert = async (cliOptions, options, context) => {
   const files = readdirSync(options.downloadDir)
-  const forced = cliOptions.forced || options.forceDownload
+  const forced = cliOptions.forced || options.forceConvert
   const targetDir = cliOptions.target
     ? resolve(context.sourceDir, cliOptions.target)
     : options.targetDir

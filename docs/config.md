@@ -1,62 +1,55 @@
-# vuepress-plugin-migrate
+# Configurations
 
-[![Build Status](https://travis-ci.org/Shigma/vuepress-plugin-migrate.svg?branch=master)](https://travis-ci.org/Shigma/vuepress-plugin-migrate)
-[![npm](https://img.shields.io/npm/v/vuepress-plugin-migrate.svg)](https://www.npmjs.com/package/vuepress-plugin-migrate)
-
-A VuePress plugin which migrates a website to VuePress.
-
-## Options
-
-### targetDir
+## targetDir
 
 - **type:** `string`
 - **default:** `'_posts'`
 
 The directory for generated markdown files.
 
-### downloadDir
+## downloadDir
 
 - **type:** `string`
 - **default:** `'.vuepress/downloads'`
 
 The directory for downloaded HTMLs.
 
-### maxConcurrentTasks
+## maxConcurrentTasks
 
 - **type:** `number`
 - **default:** `10`
 
 The maximum number of concurrent downloads allowed.
 
-### forceDownload
+## forceDownload
 
 - **type:** `boolean`
 - **default:** `false`
 
 Whether to force download a `.html` file when it already exists.
 
-### forceConvert
+## forceConvert
 
 - **type:** `boolean`
 - **default:** `false`
 
 Whether to force overwrite a `.md` when it already exists.
 
-### sitemap
+## sitemap
 
 - **type:** `string`
 - **default:** `undefined`
 
 The sitemap URL for the source website.
 
-### getFileName
+## getFileName
 
 - **type:** `(url: string) => string`
 - **default:** `url => String(++index)`
 
 The name of the file to save as. If a falsy value is returned, the corresponding file is not downloaded.
 
-### parseHTML
+## parseHTML
 
 - **type:** `($: CheerioElement, render: ($: CheerioElement) => string) => ParsedResult`
 - **default:** `undefined`
