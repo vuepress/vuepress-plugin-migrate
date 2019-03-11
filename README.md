@@ -1,9 +1,9 @@
-# vuepress-plugin-migrate
+# [vuepress-plugin-migrate](https://shigma.github.io/vuepress-plugin-migrate/)
 
 [![Build Status](https://travis-ci.org/Shigma/vuepress-plugin-migrate.svg?branch=master)](https://travis-ci.org/Shigma/vuepress-plugin-migrate)
 [![npm](https://img.shields.io/npm/v/vuepress-plugin-migrate.svg)](https://www.npmjs.com/package/vuepress-plugin-migrate)
 
-A VuePress plugin which migrates a website to VuePress.
+A [VuePress](https://vuepress.vuejs.org/) plugin which migrates a website to VuePress.
 
 ## Options
 
