@@ -1,4 +1,5 @@
 const LIST_ITEM = '_@@_LIST_ITEM_@@_'
+const LIST_ITEM_RE = new RegExp(LIST_ITEM, 'g')
 
 const defaultRules = {
   h1: makeWrap('#', '\n\n'),
@@ -9,11 +10,11 @@ const defaultRules = {
   h6: makeWrap('######', '\n\n'),
   li: makeWrap(LIST_ITEM, ''),
   ul(el) {
-    return this.render(el).replace(LIST_ITEM, '- ')
+    return this.render(el).replace(LIST_ITEM_RE, '- ')
   },
   ol(el) {
     let index = 0
-    return this.render(el).replace(LIST_ITEM, () => `${++ index}. `)
+    return this.render(el).replace(LIST_ITEM_RE, () => `${++ index}. `)
   },
   em: makeWrap('*'),
   strong: makeWrap('**'),
