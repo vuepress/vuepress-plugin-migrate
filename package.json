@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "vuepress": "^1.0.0-alpha.44",
-    "vuepress-theme-cotrib": "^1.0.0-alpha.0"
+    "vuepress-theme-contrib": "^1.0.0-alpha.0"
   },
   "dependencies": {
     "@vuepress/shared-utils": "^1.0.0-alpha.44",
