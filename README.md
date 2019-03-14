@@ -1,23 +1,15 @@
-# [vuepress-plugin-migrate](https://shigma.github.io/vuepress-plugin-migrate/)
+# [vuepress-plugin-migrate](https://vuepress-contrib.github.io/vuepress-plugin-migrate/)
 
-[![Build Status](https://travis-ci.org/Shigma/vuepress-plugin-migrate.svg?branch=master)](https://travis-ci.org/Shigma/vuepress-plugin-migrate)
+[![Build Status](https://travis-ci.org/vuepress-contrib/vuepress-plugin-migrate.svg?branch=master)](https://travis-ci.org/vuepress-contrib/vuepress-plugin-migrate)
 [![npm](https://img.shields.io/npm/v/vuepress-plugin-migrate.svg)](https://www.npmjs.com/package/vuepress-plugin-migrate)
 
 A [VuePress](https://vuepress.vuejs.org/) plugin which migrates a website to VuePress.
 
-## CLI
+## CLI Commands
 
-### vuepress download
-
-Crawl the required pages from the source site and store them in a local folder.
-
-### vuepress convert
-
-Convert local HTML files to a markdown files and output them.
-
-### vuepress migrate
-
-Execute download and convert command in sequence. Supports parameters of both commands.
+- **download:** crawl pages from the source site and store them in a local folder.
+- **convert:** convert local HTML files to a markdown files and output them.
+- **migrate:** execute both _download_ and _convert_ command in sequence.
 
 ## Options
 

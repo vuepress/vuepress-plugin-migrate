@@ -3,7 +3,7 @@ const fetch = require('node-fetch')
 const spinner = require('./spinner')
 const { parseString } = require('xml2js')
 const { performance } = require('perf_hooks')
-const { existsSync, promises: { writeFile } } = require('fs')
+const { fs: { existsSync, writeFile }} = require('@vuepress/shared-utils')
 
 module.exports.download = async (cliOptions, options, context) => {
   const sitemap = cliOptions.sitemap || options.sitemap

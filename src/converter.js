@@ -1,10 +1,10 @@
 const cheerio = require('cheerio')
 const spinner = require('./spinner')
 const Renderer = require('./renderer')
-const { resolve } = require('path')
 const { safeDump } = require('js-yaml')
 const { performance } = require('perf_hooks')
-const { readdirSync, existsSync, promises: { readFile, writeFile } } = require('fs')
+const { fs, path } = require('@vuepress/shared-utils')
+const { readdirSync, existsSync, readFile, writeFile } = fs
 
 function ensureNoUndef(source) {
   if (Array.isArray(source)) {
@@ -29,7 +29,7 @@ module.exports.convert = async (cliOptions, options, context) => {
   const files = readdirSync(options.downloadDir)
   const forced = cliOptions.forced || options.forceConvert
   const targetDir = cliOptions.target
-    ? resolve(context.sourceDir, cliOptions.target)
+    ? path.resolve(context.sourceDir, cliOptions.target)
     : options.targetDir
   if (!targetDir) return
 

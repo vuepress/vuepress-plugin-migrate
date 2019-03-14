@@ -1,25 +1,25 @@
 {
   "name": "vuepress-plugin-migrate",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "src/index.js",
   "author": "Shigma <1700011071@pku.edu.cn>",
   "license": "MIT",
   "description": "A VuePress plugin which migrates a website to VuePress.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Shigma/vuepress-plugin-migrate.git"
+    "url": "https://github.com/vuepress-contrib/vuepress-plugin-migrate.git"
   },
   "scripts": {
     "dev": "vuepress dev docs",
-    "build": "vuepress build docs"
+    "build": "vuepress build docs",
+    "serve": "vuepress serve docs"
   },
   "devDependencies": {
-    "@vuepress/plugin-back-to-top": "^1.0.0-alpha.43",
-    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.43",
-    "vuepress": "^1.0.0-alpha.43"
+    "vuepress": "^1.0.0-alpha.44",
+    "vuepress-theme-cotrib": "^1.0.0-alpha.0"
   },
   "dependencies": {
-    "@vuepress/shared-utils": "^1.0.0-alpha.43",
+    "@vuepress/shared-utils": "^1.0.0-alpha.44",
     "cheerio": "^1.0.0-rc.2",
     "js-yaml": "^3.12.2",
     "node-fetch": "^2.3.0",

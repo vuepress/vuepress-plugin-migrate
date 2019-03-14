@@ -1,8 +1,10 @@
-const { resolve, isAbsolute } = require('path')
-const { existsSync, mkdirSync } = require('fs')
 const downloader = require('./downloader')
 const converter = require('./converter')
 const shared = require('./shared')
+const {
+  fs: { existsSync, mkdirSync },
+  path: { resolve, isAbsolute },
+} = require('@vuepress/shared-utils')
 
 let fileIndex = 0
 const defaultgetFileName = () => String(++fileIndex)
