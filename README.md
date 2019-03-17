@@ -1,15 +1,94 @@
-# [vuepress-plugin-migrate](https://vuepress-contrib.github.io/vuepress-plugin-migrate/)
+# vuepress-plugin-migrate
 
-[![Build Status](https://travis-ci.org/vuepress-contrib/vuepress-plugin-migrate.svg?branch=master)](https://travis-ci.org/vuepress-contrib/vuepress-plugin-migrate)
 [![npm](https://img.shields.io/npm/v/vuepress-plugin-migrate.svg)](https://www.npmjs.com/package/vuepress-plugin-migrate)
 
 A [VuePress](https://vuepress.vuejs.org/) plugin which migrates a website to VuePress.
 
-## CLI Commands
+- [CLI](#cli)
+  - [vuepress download](#vuepress-download)
+    - [-s, --sitemap `<sitemap>`](#s---sitemap-sitemap)
+    - [-f, --force-download](#f---force-download)
+    - [-c, --clear-download](#c---clear-download)
+  - [vuepress convert](#vuepress-convert)
+    - [-t, --target `<targetDir>`](#t---target-targetdir)
+    - [-f, --force-convert](#f---force-convert)
+    - [-c, --clear-target](#c---clear-target)
+  - [vuepress migrate](#vuepress-migrate)
+    - [-f, --force](#f---force)
+    - [-c, --clear](#c---clear)
+  - [general options](#general-options)
+    - [--error-log](#error-log)
+    - [--download-dir `<downloadDir>`](#download-dir-downloaddir)
+- [Options](#options)
+  - [targetDir](#targetdir)
+  - [downloadDir](#downloaddir)
+  - [maxConcurrentTasks](#maxconcurrenttasks)
+  - [forceDownload](#forcedownload)
+  - [clearDownloadDir](#cleardownloaddir)
+  - [forceConvert](#forceconvert)
+  - [clearTargetDir](#cleartargetdir)
+  - [sitemap](#sitemap)
+  - [getFileName](#getfilename)
+  - [parseHTML](#parsehtml)
+- [Contribution](#contribution)
 
-- **download:** crawl pages from the source site and store them in a local folder.
-- **convert:** convert local HTML files to a markdown files and output them.
-- **migrate:** execute both _download_ and _convert_ command in sequence.
+## CLI
+
+### vuepress download
+
+Crawl pages from the source site and store them in [a local folder](#downloaddir).
+
+#### -s, --sitemap `<sitemap>`
+
+See [sitemap](#sitemap).
+
+#### -f, --force-download
+
+See [forceDownload](#forcedownload).
+
+#### -c, --clear-download
+
+See [clearDownloadDir](#cleardownloaddir).
+
+### vuepress convert
+
+Convert local HTML files to a markdown files and output them.
+
+#### -t, --target `<targetDir>`
+
+See [targetDir](#targetDir).
+
+#### -f, --force-convert
+
+See [forceConvert](#forceconvert).
+
+#### -c, --clear-target
+
+See [clearTargetDir](#cleartargetdir).
+
+### vuepress migrate
+
+Execute download and convert command in sequence. Supports parameters of both commands.
+
+#### -f, --force
+
+Equivalent to `--force-download --force-convert`.
+
+#### -c, --clear
+
+Equivalent to `--clear-download --clear-target`.
+
+### general options
+
+These options can be applied in all commands.
+
+#### --error-log
+
+Show detailed informations when an error is encounted.
+
+#### --download-dir `<downloadDir>`
+
+See [downloadDir](#downloaddir).
 
 ## Options
 
@@ -41,12 +120,26 @@ The maximum number of concurrent downloads allowed.
 
 Whether to force download a `.html` file when it already exists.
 
+### clearDownloadDir
+
+- **type:** `boolean`
+- **default:** `false`
+
+Whether to clear download directory before downloading.
+
 ### forceConvert
 
 - **type:** `boolean`
 - **default:** `false`
 
 Whether to force overwrite a `.md` when it already exists.
+
+### clearTargetDir
+
+- **type:** `boolean`
+- **default:** `false`
+
+Whether to clear target directory before converting.
 
 ### sitemap
 
