@@ -1,6 +1,5 @@
-# [vuepress-plugin-migrate](https://vuepress-contrib.github.io/vuepress-plugin-migrate/)
+# [vuepress-plugin-migrate](https://vuepress.github.io/plugins/migrate.html)
 
-[![Build Status](https://travis-ci.org/vuepress-contrib/vuepress-plugin-migrate.svg?branch=master)](https://travis-ci.org/vuepress-contrib/vuepress-plugin-migrate)
 [![npm](https://img.shields.io/npm/v/vuepress-plugin-migrate.svg)](https://www.npmjs.com/package/vuepress-plugin-migrate)
 
 A [VuePress](https://vuepress.vuejs.org/) plugin which migrates a website to VuePress.

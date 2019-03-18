@@ -9,14 +9,13 @@
     "type": "git",
     "url": "https://github.com/vuepress-contrib/vuepress-plugin-migrate.git"
   },
+  "bugs": {
+    "url": "https://github.com/vuepress-contrib/vuepress-plugin-migrate/issues"
+  },
+  "homepage": "https://vuepress.github.io/plugins/migrate.html",
   "scripts": {
-    "dev": "vuepress dev docs",
-    "build": "vuepress build docs",
-    "serve": "vuepress serve docs"
   },
   "devDependencies": {
-    "vuepress": "^1.0.0-alpha.44",
-    "vuepress-theme-contrib": "^1.0.0-alpha.0"
   },
   "dependencies": {
     "@vuepress/shared-utils": "^1.0.0-alpha.44",
